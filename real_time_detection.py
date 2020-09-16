@@ -225,6 +225,5 @@ def real_time_obj_detection(model_path,GPU_ratio=0.2):
 if __name__ == "__main__":
     # model_path = r"G:\我的雲端硬碟\Python\Code\Pycharm\YOLO_V4\yolo_weights\pb_model.pb"
     model_path = r"G:\我的雲端硬碟\Python\Code\Pycharm\YOLO_V4\yolo_weights\YOLO_v4_416.ckpt.meta"
-
     GPU_ratio = 0.2
     real_time_obj_detection(model_path,GPU_ratio=GPU_ratio)
