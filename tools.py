@@ -1,8 +1,15 @@
 import os
-import tensorflow as tf
+import tensorflow
 from src.YOLO import YOLO
 from utils.misc_utils import load_weights
 
+#----tensorflow version check
+if tensorflow.__version__.startswith('1.'):
+    import tensorflow as tf
+else:
+    import tensorflow.compat.v1 as tf
+    tf.disable_v2_behavior()
+print("Tensorflow version of {}: {}".format(__file__,tf.__version__))
 
 def convert_weight(model_path,output_dir,size=608):
     save_path = os.path.join(output_dir,'YOLO_v4_' + str(size) + '.ckpt')
@@ -23,11 +30,10 @@ def convert_weight(model_path,output_dir,size=608):
 
 if __name__ == "__main__":
     #----convert_weight
-    model_path = r"C:\Users\User\Downloads\yolov4 (1).weights"
-    output_dir = r"G:\我的雲端硬碟\Python\Code\Pycharm\YOLO_V4\yolo_weights"
+    model_path = r"C:\Users\User\Desktop\yolo_test\yolov4.weights"
+    output_dir = r"C:\Users\User\Desktop\yolo_test"
     size = 416
     convert_weight(model_path, output_dir, size=size)
-
 
 
 

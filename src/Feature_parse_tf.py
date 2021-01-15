@@ -1,6 +1,13 @@
 # coding:utf-8
 # 
-import tensorflow as tf
+import tensorflow
+if tensorflow.__version__.startswith('1.'):
+    import tensorflow as tf
+    #import tensorflow.contrib.slim as slim
+else:
+    import tensorflow.compat.v1 as tf
+    tf.disable_v2_behavior()
+    #import tf_slim as slim
 
 # 得到预测的box
 def get_predict_result(feature_1, feature_2, feature_3, anchor_1, anchor_2, anchor_3, width, height, class_num, score_thresh=0.5, iou_thresh=0.5, max_box=20):

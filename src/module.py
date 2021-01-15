@@ -1,10 +1,18 @@
 # coding:utf-8
 # module of net
 
-import tensorflow as tf
+import tensorflow
 from src.Activation import activation as act
 from src import Activation
-slim = tf.contrib.slim
+
+if tensorflow.__version__.startswith('1.'):
+    import tensorflow as tf
+    import tensorflow.contrib.slim as slim
+else:
+    import tensorflow.compat.v1 as tf
+    tf.disable_v2_behavior()
+    import tf_slim as slim
+print("Tensorflow version of {}: {}".format(__file__,tf.__version__))
 
 # conv2d
 def conv(inputs, out_channels, kernel_size=3, stride=1):

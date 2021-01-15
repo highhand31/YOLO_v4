@@ -1,16 +1,26 @@
 import cv2,time
 import numpy as np
-import tensorflow as tf
-from tensorflow.python.platform import gfile
+import tensorflow
 from src.YOLO import YOLO
 from src.Feature_parse_tf import get_predict_result
 from utils import tools
+
+#----tensorflow version check
+if tensorflow.__version__.startswith('1.'):
+    import tensorflow as tf
+    from tensorflow.python.platform import gfile
+else:
+    import tensorflow.compat.v1 as tf
+    tf.disable_v2_behavior()
+    import tensorflow.compat.v1.gfile as gfile
+print("Tensorflow version of {}: {}".format(__file__,tf.__version__))
 
 
 
 def video_init(is_2_write=False,save_path=None):
     writer = None
-    cap = cv2.VideoCapture(0)
+    # cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture("http://192.168.0.196:8080/video")
     height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)#default 480
     width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)#default 640
 
@@ -165,6 +175,7 @@ class Yolo_v4():
 
         boxes, score, label = self.sess.run([self.pre_boxes, self.pre_score, self.pre_label],
                                             feed_dict={self.tf_input:img_4d})
+        print("score:",score)
         img_bgr = tools.draw_img(img_bgr, boxes, score, label, self.label_dict, self.color_table)
 
         return img_bgr
@@ -173,6 +184,7 @@ def real_time_obj_detection(model_path,GPU_ratio=0.2):
     #----var
     frame_count = 0
     FPS = "0"
+    d_t = 0
 
     #----video streaming init
     cap, height, width, writer = video_init()
@@ -194,7 +206,7 @@ def real_time_obj_detection(model_path,GPU_ratio=0.2):
             frame_count += 1
             if frame_count >= 10:
                 d_t = time.time() - d_t
-                FPS = "FPS=%1f" % (10 / d_t)
+                FPS = "FPS=%1f" % (frame_count / d_t)
                 frame_count = 0
 
             # cv2.putText(影像, 文字, 座標, 字型, 大小, 顏色, 線條寬度, 線條種類)
@@ -224,6 +236,6 @@ def real_time_obj_detection(model_path,GPU_ratio=0.2):
 
 if __name__ == "__main__":
     # model_path = r"G:\我的雲端硬碟\Python\Code\Pycharm\YOLO_V4\yolo_weights\pb_model.pb"
-    model_path = r"G:\我的雲端硬碟\Python\Code\Pycharm\YOLO_V4\yolo_weights\YOLO_v4_416.ckpt.meta"
-    GPU_ratio = 0.2
+    model_path = r"C:\Users\User\Desktop\yolo_test\YOLO_v4_416.ckpt.meta"
+    GPU_ratio = 0.4
     real_time_obj_detection(model_path,GPU_ratio=GPU_ratio)

@@ -1,9 +1,17 @@
 # coding:utf-8
 # implement YOLO
-import tensorflow as tf
+import tensorflow
 from src import module
 import numpy as np
-slim = tf.contrib.slim
+
+if tensorflow.__version__.startswith('1.'):
+    import tensorflow as tf
+    import tensorflow.contrib.slim as slim
+else:
+    import tensorflow.compat.v1 as tf
+    tf.disable_v2_behavior()
+    import tf_slim as slim
+print("Tensorflow version of {}: {}".format(__file__,tf.__version__))
 
 class YOLO():
     def __init__(self):

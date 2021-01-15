@@ -1,7 +1,14 @@
 # coding:utf-8
 # Implementation of activation function
 from enum import Enum
-import tensorflow as tf
+import tensorflow
+if tensorflow.__version__.startswith('1.'):
+    import tensorflow as tf
+    import tensorflow.contrib.slim as slim
+else:
+    import tensorflow.compat.v1 as tf
+    tf.disable_v2_behavior()
+    import tf_slim as slim
 
 class activation(Enum):
     MISH = 1        # mish activation

@@ -1,7 +1,14 @@
 # coding: utf-8
 
 import numpy as np
-import tensorflow as tf
+import tensorflow
+if tensorflow.__version__.startswith('1.'):
+    import tensorflow as tf
+    # import tensorflow.contrib.slim as slim
+else:
+    import tensorflow.compat.v1 as tf
+    tf.disable_v2_behavior()
+    # import tf_slim as slim
 import random
 
 def load_weights(var_list, weights_file):

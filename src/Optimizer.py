@@ -1,7 +1,14 @@
 # coding:utf-8
 # optimizer
-import tensorflow as tf
+import tensorflow
 from src import Log
+if tensorflow.__version__.startswith('1.'):
+    import tensorflow as tf
+    # import tensorflow.contrib.slim as slim
+else:
+    import tensorflow.compat.v1 as tf
+    tf.disable_v2_behavior()
+    # import tf_slim as slim
 
 # configuration optimizer
 def config_optimizer(optimizer_name, lr, momentum=0.99):
