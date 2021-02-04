@@ -19,8 +19,7 @@ print("Tensorflow version of {}: {}".format(__file__,tf.__version__))
 
 def video_init(is_2_write=False,save_path=None):
     writer = None
-    # cap = cv2.VideoCapture(0)
-    cap = cv2.VideoCapture("http://192.168.0.196:8080/video")
+    cap = cv2.VideoCapture(0)
     height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)#default 480
     width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)#default 640
 
