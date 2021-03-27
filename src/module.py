@@ -86,13 +86,13 @@ def yolo_conv_block(net,in_channels, a, b):
     b: number of 1*1 convolution
     '''
     for _ in range(a):
-        out_channels = in_channels / 2
+        out_channels = int(in_channels / 2)
         net = conv(net, out_channels, kernel_size=1)
         net = conv(net, in_channels)
     
     out_channels = in_channels
     for _ in range(b):
-        out_channels = out_channels / 2
+        out_channels = int(out_channels / 2)
         net = conv(net, out_channels, kernel_size=1)
 
     return net
