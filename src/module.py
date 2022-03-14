@@ -119,8 +119,9 @@ def yolo_upsample_block(inputs, in_channels, route):
     '''
     shape = tf.shape(inputs)
     out_height, out_width = shape[1]*2, shape[2]*2
-    inputs = tf.compat.v1.image.resize_nearest_neighbor(inputs, (out_height, out_width))
-    
+    # inputs = tf.compat.v1.image.resize_nearest_neighbor(inputs, (out_height, out_width))
+    inputs = tf.image.resize_nearest_neighbor(inputs, (out_height, out_width))
+
     route = conv(route, in_channels, kernel_size=1)
 
     net = tf.concat([route, inputs], -1)
