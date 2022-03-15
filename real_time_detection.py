@@ -15,8 +15,6 @@ else:
     import tensorflow.compat.v1.gfile as gfile
 print("Tensorflow version of {}: {}".format(__file__,tf.__version__))
 
-
-
 def video_init(is_2_write=False,save_path=None):
     writer = None
     # cap = cv2.VideoCapture(r"http://192.168.0.133:8080/video")
@@ -121,7 +119,7 @@ class Yolo_v4():
             width = int(model_path.split("\\")[-1].split(".")[0].split("_")[-1])  # 416, 608
             height = width  # 416, 608
             yolo = YOLO()
-            tf_input = tf.compat.v1.placeholder(dtype=tf.float32, shape=[1, None, None, 3])
+            tf_input = tf.placeholder(dtype=tf.float32, shape=[1, None, None, 3])
 
             feature_y1, feature_y2, feature_y3 = yolo.forward(tf_input, class_num, isTrain=False)
             tf_pre_boxes, tf_pre_score, tf_pre_label = get_predict_result(feature_y1, feature_y2, feature_y3,
@@ -130,7 +128,7 @@ class Yolo_v4():
                                                                  score_thresh=score_thresh,
                                                                  iou_thresh=iou_thresh,
                                                                  max_box=max_box)
-            init = tf.compat.v1.global_variables_initializer()
+            init = tf.global_variables_initializer()
 
             saver = tf.train.Saver()
             #----GPU ratio setting
@@ -141,7 +139,7 @@ class Yolo_v4():
                 config.gpu_options.allow_growth = True  # 依照程式執行所需要的資料來自動調整
             else:
                 config.gpu_options.per_process_gpu_memory_fraction = GPU_ratio  # 手動限制GPU資源的使用
-            sess = tf.compat.v1.Session(config=config)
+            sess = tf.Session(config=config)
             sess.run(init)
             saver.restore(sess, model_path[:-5])
 
@@ -232,7 +230,6 @@ def real_time_obj_detection(model_path,GPU_ratio=0.2):
     if writer is not None:
         writer.release()
     cv2.destroyAllWindows()
-
 
 if __name__ == "__main__":
     # model_path = r"G:\我的雲端硬碟\Python\Code\Pycharm\YOLO_V4\yolo_weights\pb_model.pb"
